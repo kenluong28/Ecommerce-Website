@@ -1,8 +1,7 @@
 from django.test import TestCase
-
 from django.contrib.auth.models import User
-
 from store.models import Category, Product
+from django.urls import reverse
 
 class TestCategoriesModel(TestCase):
 
@@ -36,3 +35,21 @@ class TestProductsModel(TestCase):
         data = self.data1
         self.assertTrue(isinstance(data, Product))
         self.assertEqual(str(data), 'django beginners')
+
+    def test_products_url(self):
+        """
+        Test product model slug and URL reverse
+        """
+        data = self.data1
+        url = reverse('store:product_detail', args=[data.slug])
+        self.assertEqual(url, '/item/django-beginners/')
+        response = self.client.post(
+            reverse('store:product_detail', args=[data.slug]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_products_custom_manager_basic(self):
+        """
+        Test product model custom manager returns only active products
+        """
+        data = Product.products.all()
+        self.assertEqual(data.count(), 1)
