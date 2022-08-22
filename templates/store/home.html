@@ -24,6 +24,7 @@
     <div class="container">
       <div class="pb-3 h5">All Books</div>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+
         {% for product in products %}
 
         <div class="col">
@@ -37,7 +38,7 @@
               <p class="card-text">
                 <a
                   class="text-dark text-decoration-none"
-                  href=""
+                  href="{{ product.get_absolute_url }}"
                   >{{ product.title }}</a
                 >
               </p>
@@ -49,6 +50,7 @@
         </div>
 
         {% endfor %}
+
       </div>
     </div>
   </div>
