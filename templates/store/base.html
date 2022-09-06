@@ -58,7 +58,17 @@
         </div>
 
         <a type="button" role="button" href="{% url "basket:basket_summary" %}" class="btn btn-outline-light ms-1">
-          <div class="d-inline-flex">1</div>
+
+          {% with total_qty=basket|length %}
+            <div id="basket-qty" class="d-inline-flex">
+              {% if total_qty > 0 %}
+                {{ total_qty }}
+              {% else %}
+                0
+              {% endif %}
+            </div>
+          {% endwith %}
+
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
             class="bi bi-bag-check mb-1" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
