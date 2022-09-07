@@ -55,12 +55,13 @@
         {% endwith %}
         {% endfor %}
         <div class="col-12 text-end">
-            <div class="h6 fw-bold">Sub Total: $<span id="subtotal">{{basket.get_total_price}}</span></div>
+            <div class="h6 fw-bold">Sub Total: $<div id="subtotal" class="d-inline-flex">{{basket.get_total_price}}</div></div>
         </div>
     </div>
 </main>
 
 <script>
+    // Delete item
     $(document).on('click', '.delete-button', function (e) {
       e.preventDefault();
       var prodid = $(this).data('index');
@@ -78,6 +79,27 @@
         error: function (xhr, errmsg, err) {}
       });
     })
+
+    // Update item
+    $(document).on('click', '.update-button', function (e) {
+        e.preventDefault();
+        var prodid = $(this).data('index');
+        $.ajax({
+          type: 'POST',
+          url: '{% url "basket:basket_update" %}',
+          data: {
+            productid: $(this).data('index'),
+            productqty: $('#select' + prodid + ' option:selected').text(),
+            csrfmiddlewaretoken: "{{csrf_token}}",
+            action: 'post'
+          },
+          success: function (json) {
+            document.getElementById("basket-qty").innerHTML = json.qty
+            document.getElementById("subtotal").innerHTML = json.subtotal
+          },
+          error: function (xhr, errmsg, err) {}
+        });
+      })
   </script>
 
 {% endblock content %}
